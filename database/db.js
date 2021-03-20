@@ -7,3 +7,5 @@ const pool = new Pool({
   database: "api",
   port: "8000",
 });
+
+module.exports = pool;
