@@ -5,7 +5,6 @@ const PORT = process.env.PORT || 5000;
 const myConnection = require("express-myconnection");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session");
-const passport = require("passport");
 const mysql = require("mysql");
 const transactionsRoutes = require("../src/routes/transactions");
 const accountRoutes = require("./routes/accounts");
@@ -14,15 +13,12 @@ require("dotenv").config();
 
 //Initialize
 const app = express();
-require("./lib/passport");
 
 //Middlewares
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(
   session({
