@@ -1,5 +1,4 @@
 const express = require("express");
-const pool = require("../database/db");
 
 const transactions = [
   {
@@ -110,11 +109,15 @@ const transactions = [
 ];
 
 const getAllTransactions = async (req, res) => {
-  try {
-    res.json(transactions);
-  } catch (err) {
-    res.status(400).json(`Error: ${err}`);
-  }
+  req.getConnection((err, conn) => {
+    conn.query("SELECT * FROM transactions", (err, transactions) => {
+      if (err) {
+        res.json(err);
+      }
+      console.log(transactions);
+      res.json(transactions)
+    });
+  });
 };
 
 const getTransaction = async (req, res) => {
@@ -125,6 +128,7 @@ const getTransaction = async (req, res) => {
 };
 
 const addTransaction = async (req, res) => {
+  const { desc, type, amount, category, date } = req.body;
   try {
   } catch (err) {
     res.status(400).json(`Error: ${err}`);

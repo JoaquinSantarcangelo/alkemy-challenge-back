@@ -16,7 +16,8 @@ services:
       MYSQL_DATABASE: api
       MYSQL_USER: alkemy
       MYSQL_PASSWORD: 123456
-
+    ports:
+      - 3306:3306
   adminer:
     image: adminer
     restart: always
