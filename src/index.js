@@ -4,17 +4,29 @@ const app = express();
 const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 const myConnection = require("express-myconnection");
+const session = require("express-session");
+const MySQLStore = require("express-mysql-session");
+
 const mysql = require("mysql");
 require("dotenv").config();
 
 const transactionsRoutes = require("../src/routes/transactions");
 const accountRoutes = require("./routes/accounts");
+const db = require("./config/db.config");
 
 //Middlewares
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
+app.use(
+  session({
+    secret: "alkemychallenge",
+    resave: false,
+    saveUninitialized: false,
+    store: new MySQLStore(db),
+  })
+);
 
 //DB
 app.use(

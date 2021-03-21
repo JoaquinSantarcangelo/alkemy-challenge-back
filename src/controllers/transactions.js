@@ -134,7 +134,7 @@ const addTransaction = async (req, res) => {
         res.json(err);
       }
       console.log(transaction);
-      res.send("Works");
+      res.send("Added Successfully");
     });
   });
 };
@@ -143,11 +143,26 @@ const addTransaction = async (req, res) => {
 const editTransaction = async (req, res) => {
   console.log("Editing transaction");
   const { id } = req.params;
+  const data = req.body;
 
-  try {
-  } catch (err) {
-    res.status(400).json(`Error: ${err}`);
-  }
+  console.log(id, data);
+
+  req.getConnection((err, conn) => {
+    conn.query(
+      "UPDATE transactions set ? WHERE id = ?",
+      [data, id],
+      (err, transaction) => {
+        if (err) {
+          console.log(err)
+          res.json(err);
+        } else {
+          console.log(transaction);
+          console.log("Edited!")
+          res.send("Updated Successfully");
+        }
+      }
+    );
+  });
 };
 
 //Delete Transaction
@@ -164,13 +179,11 @@ const deleteTransaction = async (req, res) => {
           res.json(err);
         } else {
           console.log(transaction);
-          res.send("Work");
+          res.send("Deleted Successfully");
         }
       }
     );
   });
-
-  console.log(id);
 };
 
 module.exports = {
