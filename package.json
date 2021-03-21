@@ -11,15 +11,8 @@
   "author": "Joaquin Santarcangelo",
   "license": "ISC",
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
-    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "express-oauth-server": "^2.0.0",
-    "pg": "^8.5.1",
-    "pg-hstore": "^2.3.3",
-    "pg-promise": "^10.9.5",
-    "sequelize": "^6.5.1"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "dotenv": "^8.2.0"
