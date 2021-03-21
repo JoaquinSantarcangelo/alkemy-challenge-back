@@ -15,7 +15,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: alkemy
-      POSTGRES_PASSWORD: 123456
+      POSTGRES_PASSWORD: alkemy
       POSTGRES_DB: api
     volumes:
       - ./pgdata:/var/lib/postgresql/data
