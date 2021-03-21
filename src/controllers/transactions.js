@@ -114,25 +114,27 @@ const getAllTransactions = async (req, res) => {
       if (err) {
         res.json(err);
       }
-      console.log(transactions);
-      res.json(transactions)
+      console.log("Sent transactions: ", transactions);
+      res.json(transactions);
     });
   });
 };
 
-const getTransaction = async (req, res) => {
-  try {
-  } catch (err) {
-    res.status(400).json(`Error: ${err}`);
-  }
-};
+const getTransaction = async (req, res) => {};
 
 const addTransaction = async (req, res) => {
-  const { desc, type, amount, category, date } = req.body;
-  try {
-  } catch (err) {
-    res.status(400).json(`Error: ${err}`);
-  }
+  const data = req.body;
+  console.log(data);
+
+  req.getConnection((err, conn) => {
+    conn.query("INSERT INTO transactions set ?", data, (err, transaction) => {
+      if (err) {
+        res.json(err);
+      }
+      console.log(transaction);
+      res.send("Works");
+    });
+  });
 };
 
 const editTransaction = async (req, res) => {

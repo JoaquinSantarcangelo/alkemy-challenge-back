@@ -5,13 +5,10 @@ const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 const myConnection = require("express-myconnection");
 const mysql = require("mysql");
-
 require("dotenv").config();
 
 const transactionsRoutes = require("../src/routes/transactions");
 const accountRoutes = require("./routes/accounts");
-
-
 
 //Middlewares
 app.use(express.json());
