@@ -1,5 +1,4 @@
 CREATE DATABASE api;
-
 CREATE TABLE users(
     name VARCHAR(30),
     email VARCHAR(40),

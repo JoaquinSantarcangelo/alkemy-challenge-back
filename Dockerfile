@@ -6,4 +6,6 @@ COPY . .
 
 RUN npm install
 
+COPY ormconfig.docker.json ./ormconfig.son
+
 CMD ["npm", "start"]

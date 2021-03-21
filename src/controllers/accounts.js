@@ -1,5 +1,5 @@
 const express = require("express");
-const pool = require("../../database/db");
+const pool = require("../database/db");
 
 const login = async (req, res) => {
   const { email, password } = req.body;

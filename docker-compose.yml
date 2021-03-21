@@ -5,10 +5,35 @@ services:
     build: .
     ports:
       - "5000:5000"
+    environment:
+      DATABASE_URL: postgres://alkemy:123456@postgres:5432/api
+      NODE_ENV: development
   db:
     image: "postgres"
     ports:
-      - "8000:5432"
+      - "5432:5432"
+    restart: always
     environment:
-      POSTGRES_PASSWORD: "123456"
-      POSTGRES_USER: "alkemy"
+      POSTGRES_USER: alkemy
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: api
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:4.18
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+  pgadmin-data:
