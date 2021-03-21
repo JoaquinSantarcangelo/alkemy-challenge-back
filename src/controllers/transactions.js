@@ -153,11 +153,11 @@ const editTransaction = async (req, res) => {
       [data, id],
       (err, transaction) => {
         if (err) {
-          console.log(err)
+          console.log(err);
           res.json(err);
         } else {
           console.log(transaction);
-          console.log("Edited!")
+          console.log("Edited!");
           res.send("Updated Successfully");
         }
       }

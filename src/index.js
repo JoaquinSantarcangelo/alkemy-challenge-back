@@ -1,24 +1,29 @@
 const express = require("express");
 const morgan = require("morgan");
-const app = express();
 const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 const myConnection = require("express-myconnection");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session");
-
+const passport = require("passport");
 const mysql = require("mysql");
-require("dotenv").config();
-
 const transactionsRoutes = require("../src/routes/transactions");
 const accountRoutes = require("./routes/accounts");
 const db = require("./config/db.config");
+require("dotenv").config();
+
+//Initialize
+const app = express();
+require("./lib/passport");
 
 //Middlewares
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(
   session({
     secret: "alkemychallenge",
