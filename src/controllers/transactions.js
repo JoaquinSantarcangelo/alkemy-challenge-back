@@ -122,7 +122,9 @@ const getAllTransactions = async (req, res) => {
 
 const getTransaction = async (req, res) => {};
 
+//Add Transaction
 const addTransaction = async (req, res) => {
+  console.log("Adding new transaction");
   const data = req.body;
   console.log(data);
 
@@ -137,7 +139,9 @@ const addTransaction = async (req, res) => {
   });
 };
 
+//Edit Transaction
 const editTransaction = async (req, res) => {
+  console.log("Editing transaction");
   const { id } = req.params;
 
   try {
@@ -146,11 +150,27 @@ const editTransaction = async (req, res) => {
   }
 };
 
+//Delete Transaction
 const deleteTransaction = async (req, res) => {
-  try {
-  } catch (err) {
-    res.status(400).json(`Error: ${err}`);
-  }
+  console.log("Deleting transaction");
+  const { id } = req.params;
+
+  req.getConnection((err, conn) => {
+    conn.query(
+      "DELETE FROM transactions WHERE ID = ?",
+      [id],
+      (err, transaction) => {
+        if (err) {
+          res.json(err);
+        } else {
+          console.log(transaction);
+          res.send("Work");
+        }
+      }
+    );
+  });
+
+  console.log(id);
 };
 
 module.exports = {
