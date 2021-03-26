@@ -2,21 +2,29 @@ const express = require("express");
 
 const login = async (req, res) => {
   console.log("Handleing Log in");
-  const { email, pw } = req.body;
-  console.log(email, pw);
+  const { email, password } = req.body;
+  console.log(email, password);
 
-  conn.query(
-    "SELECT email FROM users WHERE email = ? AND password = ?",
-    [email, pw],
-    (err, user) => {
+  req.getConnection((err, conn) => {
+    conn.query("SELECT * FROM users WHERE email = ?", [email], (err, user) => {
       if (err) {
         res.json({ err });
       } else {
-        console.log(user);
-        res.send("Added Successfully");
+        if (user.length > 0) {
+          if (user[0].password === password) {
+            console.log("User logged");
+            res.status(200).send("User Logged");
+          } else {
+            console.log("Credentials dont match");
+            res.status(500).send("Credentials dont match");
+          }
+        } else {
+          console.log("Credentials not found");
+          res.status(500).send("Credentials not found");
+        }
       }
-    }
-  );
+    });
+  });
 };
 
 const register = async (req, res) => {
