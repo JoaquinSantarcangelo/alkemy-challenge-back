@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
 const login = async (req, res) => {
   console.log("Handleing Log in");
@@ -6,24 +8,28 @@ const login = async (req, res) => {
   console.log(email, password);
 
   req.getConnection((err, conn) => {
-    conn.query("SELECT * FROM users WHERE email = ?", [email], (err, user) => {
-      if (err) {
-        res.json({ err });
-      } else {
-        if (user.length > 0) {
-          if (user[0].password === password) {
-            console.log("User logged");
-            res.status(200).send("User Logged");
-          } else {
-            console.log("Credentials dont match");
-            res.status(500).send("Credentials dont match");
-          }
+    conn.query(
+      "SELECT * FROM users WHERE email = ?",
+      [email],
+      async (err, user) => {
+        if (err) {
+          res.json({ err });
         } else {
-          console.log("Credentials not found");
-          res.status(500).send("Credentials not found");
+          if (user.length > 0) {
+            if (await bcrypt.compare(password, user[0].password)) {
+              console.log("User logged");
+              res.status(200).send("User Logged");
+            } else {
+              console.log("Credentials dont match");
+              res.status(500).send("Credentials dont match");
+            }
+          } else {
+            console.log("Credentials not found");
+            res.status(500).send("Credentials not found");
+          }
         }
       }
-    });
+    );
   });
 };
 
@@ -31,7 +37,9 @@ const register = async (req, res) => {
   const { email, password, name } = req.body;
   console.log("Handleing Register");
 
-  const data = { email, password, name };
+  let hashedPassword = await bcrypt.hash(password, 8);
+
+  const data = { email, password: hashedPassword, name };
 
   req.getConnection((err, conn) => {
     conn.query(
