@@ -109,14 +109,22 @@ const transactions = [
 ];
 
 const getAllTransactions = async (req, res) => {
+  const { id } = req.params;
+  console.log("Sending All Transactions to user, id: ", id);
+
   req.getConnection((err, conn) => {
-    conn.query("SELECT * FROM transactions", (err, transactions) => {
-      if (err) {
-        res.json(err);
+    conn.query(
+      "SELECT * FROM transactions WHERE user_id = ?",
+      [id],
+      (err, transactions) => {
+        if (err) {
+          console.log(err)
+          res.json(err);
+        }
+        console.log("Sent transactions: ", transactions);
+        res.json(transactions);
       }
-      console.log("Sent transactions: ", transactions);
-      res.json(transactions);
-    });
+    );
   });
 };
 

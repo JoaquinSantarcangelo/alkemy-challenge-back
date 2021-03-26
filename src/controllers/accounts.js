@@ -18,7 +18,8 @@ const login = async (req, res) => {
           if (user.length > 0) {
             if (await bcrypt.compare(password, user[0].password)) {
               console.log("User logged");
-              res.status(200).send("User Logged");
+              console.log(user[0].id);
+              res.status(200).json({ user: user[0]});
             } else {
               console.log("Credentials dont match");
               res.status(500).send("Credentials dont match");
